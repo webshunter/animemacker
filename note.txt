@@ -1,0 +1,54 @@
+# Project Update Notes
+
+This project has been updated to use an Express.js backend with an SQLite database for persistent storage, replacing the previous `localStorage` implementation.
+
+## Backend Setup and Run
+
+1.  **Navigate to the backend directory:**
+    ```bash
+    cd backend
+    ```
+2.  **Install dependencies (if not already done):**
+    ```bash
+    npm install
+    ```
+3.  **Start the backend server:**
+    ```bash
+    node server.js
+    ```
+    The backend server will run on `http://localhost:5552`. It will create a `database.sqlite` file in the `backend` directory if it doesn't exist, and set up `scenes` and `characters` tables.
+
+## Frontend Setup and Run
+
+1.  **Navigate to the project root directory:**
+    ```bash
+    cd /mnt/sdcard/AppData/AnimeProject
+    ```
+2.  **Install dependencies (if not already done):**
+    ```bash
+    npm install
+    ```
+3.  **Start the frontend development server:**
+    ```bash
+    npm run dev
+    ```
+    The frontend will typically run on `http://localhost:5551`. Vite is configured to proxy `/api` requests to the backend running on port `5552`.
+
+## Google AI Studio API Key
+
+An `.env` file has been created in the project root. Please add your Google AI Studio API key to it:
+
+```
+VITE_GEMINI_API_KEY=YOUR_GOOGLE_AI_STUDIO_API_KEY
+```
+Replace `YOUR_GOOGLE_AI_STUDIO_API_KEY` with your actual API key.
+
+## Data Storage
+
+-   **Character data** and **Creation data** are now stored in `database.sqlite` managed by the Express.js backend.
+-   The frontend communicates with the backend via `/api` endpoints.
+
+## Important Notes
+
+-   Ensure the backend server (`node server.js`) is running *before* starting the frontend development server (`npm run dev`).
+-   If you encounter any issues, check the console output of both the backend and frontend for error messages.
