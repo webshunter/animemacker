@@ -6,12 +6,19 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "pm2:setup": "chmod +x scripts/*.sh && ./scripts/setup.sh",
+    "pm2:start": "chmod +x scripts/*.sh && ./scripts/start.sh",
+    "pm2:stop": "chmod +x scripts/*.sh && ./scripts/stop.sh",
+    "pm2:restart": "chmod +x scripts/*.sh && ./scripts/restart.sh",
+    "pm2:logs": "pm2 logs",
+    "pm2:status": "pm2 status"
   },
   "dependencies": {
+    "@google/genai": "^1.25.0",
+    "node-fetch": "^3.3.2",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "@google/genai": "^1.25.0"
+    "react-dom": "^19.2.0"
   },
   "devDependencies": {
     "@types/node": "^22.14.0",

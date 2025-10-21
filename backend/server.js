@@ -19,6 +19,7 @@ const db = new sqlite3.Database('./database.sqlite', (err) => {
       title TEXT NOT NULL,
       image_prompt TEXT NOT NULL,
       video_prompt TEXT NOT NULL,
+      generatedImage TEXT,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )`, (createErr) => {
       if (createErr) {
@@ -32,8 +33,7 @@ const db = new sqlite3.Database('./database.sqlite', (err) => {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
       description TEXT,
-      appearance TEXT,
-      personality TEXT,
+      image TEXT,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )`, (createErr) => {
       if (createErr) {
@@ -63,7 +63,7 @@ app.get('/api/character', (req, res) => {
 
 // Create or update character (upsert-like behavior for a single character)
 app.post('/api/character', (req, res) => {
-  const { name, description, appearance, personality } = req.body;
+  const { name, description, image } = req.body;
   if (!name) {
     return res.status(400).json({ error: 'Character name is required' });
   }
@@ -77,26 +77,26 @@ app.post('/api/character', (req, res) => {
 
     if (row) {
       // Update existing character
-      db.run('UPDATE characters SET name = ?, description = ?, appearance = ?, personality = ? WHERE id = ?',
-        [name, description, appearance, personality, row.id],
+      db.run('UPDATE characters SET name = ?, description = ?, image = ? WHERE id = ?',
+        [name, description, image, row.id],
         function (updateErr) {
           if (updateErr) {
             res.status(500).json({ error: updateErr.message });
             return;
           }
-          res.json({ id: row.id, name, description, appearance, personality, message: 'Character updated successfully' });
+          res.json({ id: row.id, name, description, image, message: 'Character updated successfully' });
         }
       );
     } else {
       // Insert new character
-      db.run('INSERT INTO characters (name, description, appearance, personality) VALUES (?, ?, ?, ?)',
-        [name, description, appearance, personality],
+      db.run('INSERT INTO characters (name, description, image) VALUES (?, ?, ?)',
+        [name, description, image],
         function (insertErr) {
           if (insertErr) {
             res.status(500).json({ error: insertErr.message });
             return;
           }
-          res.status(201).json({ id: this.lastID, name, description, appearance, personality, message: 'Character created successfully' });
+          res.status(201).json({ id: this.lastID, name, description, image, message: 'Character created successfully' });
         }
       );
     }
@@ -133,18 +133,18 @@ app.get('/api/scenes', (req, res) => {
 
 // Create a new scene
 app.post('/api/scenes', (req, res) => {
-  const { title, image_prompt, video_prompt } = req.body;
+  const { title, image_prompt, video_prompt, generatedImage } = req.body;
   if (!title || !image_prompt || !video_prompt) {
     return res.status(400).json({ error: 'Missing required fields' });
   }
-  db.run('INSERT INTO scenes (title, image_prompt, video_prompt) VALUES (?, ?, ?)',
-    [title, image_prompt, video_prompt],
+  db.run('INSERT INTO scenes (title, image_prompt, video_prompt, generatedImage) VALUES (?, ?, ?, ?)',
+    [title, image_prompt, video_prompt, generatedImage],
     function (err) {
       if (err) {
         res.status(500).json({ error: err.message });
         return;
       }
-      res.status(201).json({ id: this.lastID, title, image_prompt, video_prompt });
+      res.status(201).json({ id: this.lastID, title, image_prompt, video_prompt, generatedImage });
     }
   );
 });
@@ -168,12 +168,12 @@ app.get('/api/scenes/:id', (req, res) => {
 // Update a scene
 app.put('/api/scenes/:id', (req, res) => {
   const { id } = req.params;
-  const { title, image_prompt, video_prompt } = req.body;
+  const { title, image_prompt, video_prompt, generatedImage } = req.body;
   if (!title || !image_prompt || !video_prompt) {
     return res.status(400).json({ error: 'Missing required fields' });
   }
-  db.run('UPDATE scenes SET title = ?, image_prompt = ?, video_prompt = ? WHERE id = ?',
-    [title, image_prompt, video_prompt, id],
+  db.run('UPDATE scenes SET title = ?, image_prompt = ?, video_prompt = ?, generatedImage = ? WHERE id = ?',
+    [title, image_prompt, video_prompt, generatedImage, id],
     function (err) {
       if (err) {
         res.status(500).json({ error: err.message });

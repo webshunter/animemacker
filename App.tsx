@@ -9,6 +9,7 @@ import ErrorDisplay from './components/ErrorDisplay';
 import Modal from './components/Modal';
 import CharacterCreator from './components/CharacterCreator';
 import CharacterDisplay from './components/CharacterDisplay';
+import CharacterSelector from './components/CharacterSelector';
 import { UserIcon } from './components/icons/UserIcon';
 import CreationsList from './components/CreationsList';
 
@@ -21,6 +22,8 @@ const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [character, setCharacter] = useState<Character | null>(null);
+  const [characters, setCharacters] = useState<Character[]>([]);
+  const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [creations, setCreations] = useState<Creation[]>([]);
 
@@ -30,6 +33,8 @@ const App: React.FC = () => {
         const fetchedCharacter = await fetchCharacter();
         if (fetchedCharacter) {
           setCharacter(fetchedCharacter);
+          setCharacters([fetchedCharacter]);
+          setSelectedCharacter(fetchedCharacter);
         }
         const fetchedCreations = await fetchCreations();
         if (fetchedCreations) {
@@ -47,6 +52,17 @@ const App: React.FC = () => {
     try {
       const savedChar = await saveCharacter(newCharacter);
       setCharacter(savedChar); // Update with the character returned from the backend (with ID)
+      
+      // Add to characters list if not already there
+      setCharacters(prev => {
+        const exists = prev.some(char => char.name === savedChar.name);
+        if (!exists) {
+          return [...prev, savedChar];
+        }
+        return prev.map(char => char.name === savedChar.name ? savedChar : char);
+      });
+      
+      setSelectedCharacter(savedChar);
       setIsModalOpen(false);
     } catch (e) {
       console.error("Failed to save character to backend", e);
@@ -76,20 +92,20 @@ const App: React.FC = () => {
     setResult(null);
 
     try {
-      const generatedResult = await generateScenePrompts(idea);
+      const generatedResult = await generateScenePrompts(idea, selectedCharacter);
       setResult(generatedResult);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An unknown error occurred.');
     } finally {
       setIsLoading(false);
     }
-  }, [idea, isLoading]);
+  }, [idea, isLoading, selectedCharacter]);
 
-  const handleCreationComplete = async (scene: SceneOutput, generatedImage: string) => {
+  const handleCreationComplete = async (scene: SceneOutput) => {
     try {
       const newCreation: Creation = {
         ...scene,
-        generatedImage,
+        generatedImage: '', // No image generation, just prompts
       };
       const savedCreation = await saveCreation(newCreation);
       setCreations((prevCreations) => [...prevCreations, savedCreation]);
@@ -139,9 +155,16 @@ const App: React.FC = () => {
             )}
           </section>
 
-          <p className="text-center text-gray-400 mb-8 max-w-2xl mx-auto">
+          <p className="text-center text-gray-400 mb-4 max-w-2xl mx-auto text-sm px-4">
             Describe your anime scene concept below. Our AI Director will craft the perfect image and video prompts to bring your vision to life.
           </p>
+          
+          <CharacterSelector 
+            characters={characters}
+            selectedCharacter={selectedCharacter}
+            onSelectCharacter={setSelectedCharacter}
+          />
+          
           <InputForm
             idea={idea}
             setIdea={setIdea}
@@ -153,7 +176,7 @@ const App: React.FC = () => {
           {result && !isLoading && (
             <ResultDisplay 
               result={result} 
-              character={character} 
+              character={selectedCharacter} 
               onCreationComplete={handleCreationComplete}
             />
           )}
