@@ -13,4 +13,5 @@ export interface Character {
 export interface Creation extends SceneOutput {
   id: string;
   generatedImage: string;
+  image_filename?: string;
 }

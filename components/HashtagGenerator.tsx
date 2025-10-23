@@ -41,6 +41,9 @@ const HashtagGenerator: React.FC<HashtagGeneratorProps> = ({ result, character }
     if (title.includes('dance') || imagePrompt.includes('dance')) {
       hashtags.push('#dance', '#dancing', '#choreography', '#movement');
     }
+    if (title.includes('sleep') || title.includes('tired') || imagePrompt.includes('sleep') || imagePrompt.includes('tired') || imagePrompt.includes('bedroom') || imagePrompt.includes('bed')) {
+      hashtags.push('#sleep', '#tired', '#bedroom', '#rest', '#sleepy', '#peaceful', '#cozy');
+    }
     if (title.includes('rain') || imagePrompt.includes('rain')) {
       hashtags.push('#rain', '#rainy', '#weather', '#atmospheric');
     }
@@ -111,6 +114,9 @@ const HashtagGenerator: React.FC<HashtagGeneratorProps> = ({ result, character }
     navigator.clipboard.writeText(hashtags.join(' ')).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
+    }).catch((error) => {
+      console.error('Failed to copy hashtags:', error);
+      alert('Failed to copy hashtags. Please try again.');
     });
   };
 
@@ -118,6 +124,9 @@ const HashtagGenerator: React.FC<HashtagGeneratorProps> = ({ result, character }
     navigator.clipboard.writeText(description).then(() => {
       setDescCopied(true);
       setTimeout(() => setDescCopied(false), 2000);
+    }).catch((error) => {
+      console.error('Failed to copy description:', error);
+      alert('Failed to copy description. Please try again.');
     });
   };
 

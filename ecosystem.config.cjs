@@ -1,31 +1,39 @@
 module.exports = {
-  apps : [
+  apps: [
     {
-      name    : "anime-backend",
-      script  : "./backend/server.js",
-      cwd     : "./backend",
-      watch   : true,
-      ignore_watch : ["node_modules", "database.sqlite", "logs"],
+      name: 'animemacker-backend',
+      script: 'backend/server.js',
+      cwd: './',
+      instances: 1,
+      autorestart: true,
+      watch: false,
+      max_memory_restart: '1G',
       env: {
-        "NODE_ENV": "development"
+        NODE_ENV: 'production',
+        PORT: 5552
       },
-      log_file: "./logs/combined.log",
-      out_file: "./logs/out.log",
-      err_file: "./logs/error.log"
+      error_file: './logs/backend-error.log',
+      out_file: './logs/backend-out.log',
+      log_file: './logs/backend-combined.log',
+      time: true
     },
     {
-      name    : "anime-frontend",
-      script  : "npm",
-      args    : "run dev",
-      cwd     : "./",
-      watch   : true,
-      ignore_watch : ["node_modules", "dist", "logs"],
+      name: 'animemacker-frontend',
+      script: 'npm',
+      args: 'run preview',
+      cwd: './',
+      instances: 1,
+      autorestart: true,
+      watch: false,
+      max_memory_restart: '1G',
       env: {
-        "NODE_ENV": "development"
+        NODE_ENV: 'production',
+        PORT: 5551
       },
-      log_file: "./logs/combined.log",
-      out_file: "./logs/out.log",
-      err_file: "./logs/error.log"
+      error_file: './logs/frontend-error.log',
+      out_file: './logs/frontend-out.log',
+      log_file: './logs/frontend-combined.log',
+      time: true
     }
   ]
-}
+};

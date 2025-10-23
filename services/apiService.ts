@@ -65,3 +65,18 @@ export const deleteCreation = async (id: string) => {
   }
   return response.json();
 };
+
+export const updateSceneImage = async (id: string, imageFile: File) => {
+  const formData = new FormData();
+  formData.append('image', imageFile);
+
+  const response = await fetch(`${API_BASE_URL}/scenes/${id}/image`, {
+    method: 'POST',
+    body: formData,
+  });
+  
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  return response.json();
+};

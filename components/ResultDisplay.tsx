@@ -19,6 +19,9 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ result, character, onCrea
     navigator.clipboard.writeText(jsonString).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
+    }).catch((error) => {
+      console.error('Failed to copy JSON:', error);
+      alert('Failed to copy JSON. Please try again.');
     });
   };
 

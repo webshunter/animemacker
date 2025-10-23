@@ -1,0 +1,98 @@
+#!/usr/bin/env node
+
+// Test script untuk debug Groq API
+import Groq from "groq-sdk";
+import dotenv from "dotenv";
+
+// Load environment variables
+dotenv.config();
+
+const groq = new Groq({
+  apiKey: process.env.GROQ_API_KEY,
+});
+
+async function testGroqAPI() {
+  console.log("Testing Groq API...");
+  console.log("API Key:", process.env.GROQ_API_KEY ? "Present" : "Missing");
+  
+  const idea = "she tired and have to go sleep";
+  
+  const prompt = `
+    Generate a cinematic anime scene based on the following idea: "${idea}"
+
+    For this idea, generate two distinct outputs:
+
+    1.  **Image Description (for an AI image generator like Nano Banana):**
+        - Style: high-quality anime art, cinematic lighting, soft shading, dynamic composition.
+        - IMPORTANT: Focus on what the character is DOING in the scene, not just their appearance.
+        - Describe the character's ACTION, MOVEMENT, and ACTIVITY in detail (dancing, running, jumping, sitting, fighting, etc.).
+        - Include character appearance (gender, outfit, expression, pose) but prioritize the ACTION they are performing.
+        - Describe the full scene including background (e.g., city, forest) with anime-style lighting, emotion, time of day, and camera angle.
+        - The description must show the character actively doing something related to: "${idea}"
+
+    2.  **Video Prompt (for an AI image-to-video generator like Grok AI):**
+        - Duration: 20-35 seconds.
+        - Describe camera movement (zoom, rotation, panning) and character movement/dance with film-style wording (e.g., "slow zoom-in," "dynamic tracking shot," "fast camera rotation").
+        - Focus on the character's ACTION and MOVEMENT throughout the video.
+        - Maintain an anime movie feel with expressive movement, emotional pacing, and clear action energy.
+
+    Return the result in a single, valid JSON object with this exact format:
+    {
+      "title": "A creative, short title for the scene",
+      "image_prompt": "The detailed image description for an AI image generator",
+      "video_prompt": "The detailed video prompt for an AI image-to-video generator"
+    }
+  `;
+
+  try {
+    console.log("Calling Groq API...");
+    
+    const response = await groq.chat.completions.create({
+      messages: [
+        {
+          role: "user",
+          content: prompt
+        }
+      ],
+      model: "llama-3.1-8b-instant",
+      temperature: 0.8,
+      max_tokens: 2000,
+    });
+
+    console.log("Groq API response received!");
+    console.log("Response:", response.choices[0]?.message?.content);
+    
+    const jsonText = response.choices[0]?.message?.content?.trim();
+    if (!jsonText) {
+      throw new Error("No response from Groq");
+    }
+
+    // Extract JSON from response (remove markdown formatting)
+    let cleanJsonText = jsonText;
+    if (jsonText.includes('```json')) {
+      cleanJsonText = jsonText.split('```json')[1].split('```')[0].trim();
+    } else if (jsonText.includes('```')) {
+      cleanJsonText = jsonText.split('```')[1].split('```')[0].trim();
+    }
+
+    // Remove control characters and fix JSON
+    cleanJsonText = cleanJsonText.replace(/[\x00-\x1F\x7F]/g, '').replace(/\n/g, ' ').replace(/\s+/g, ' ');
+
+    const parsedResult = JSON.parse(cleanJsonText);
+    console.log("Parsed result:", parsedResult);
+    
+    // Check if result matches the idea
+    if (parsedResult.image_prompt.toLowerCase().includes('sleep') || 
+        parsedResult.image_prompt.toLowerCase().includes('tired') ||
+        parsedResult.image_prompt.toLowerCase().includes('bedroom')) {
+      console.log("✅ SUCCESS: Groq generated appropriate sleep-related prompt!");
+    } else {
+      console.log("❌ PROBLEM: Groq generated generic prompt, not sleep-related");
+    }
+    
+  } catch (error) {
+    console.error("Error testing Groq API:", error);
+  }
+}
+
+testGroqAPI();

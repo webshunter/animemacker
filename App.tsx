@@ -12,6 +12,7 @@ import CharacterDisplay from './components/CharacterDisplay';
 import CharacterSelector from './components/CharacterSelector';
 import { UserIcon } from './components/icons/UserIcon';
 import CreationsList from './components/CreationsList';
+import SceneDetail from './components/SceneDetail';
 
 import { fetchCharacter, saveCharacter, deleteCharacter, fetchCreations, saveCreation, deleteCreation } from './services/apiService';
 
@@ -26,6 +27,7 @@ const App: React.FC = () => {
   const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [creations, setCreations] = useState<Creation[]>([]);
+  const [viewingCreation, setViewingCreation] = useState<Creation | null>(null);
 
   useEffect(() => {
     const loadData = async () => {
@@ -121,12 +123,67 @@ const App: React.FC = () => {
       try {
         await deleteCreation(id);
         setCreations((prevCreations) => prevCreations.filter(c => c.id !== id));
+        if (viewingCreation && viewingCreation.id === id) {
+          setViewingCreation(null);
+        }
       } catch (e) {
         console.error("Failed to delete creation from backend", e);
         setError("Failed to delete creation. Please try again.");
       }
     }
   };
+
+  const handleViewCreation = (creation: Creation) => {
+    setViewingCreation(creation);
+  };
+
+  const handleBackToList = () => {
+    setViewingCreation(null);
+  };
+
+  const handleUpdateCreationImage = async (id: string, imageUrl: string, imageFilename?: string) => {
+    try {
+      // Update the creation in the state
+      setCreations((prevCreations) => 
+        prevCreations.map(c => 
+          c.id === id ? { 
+            ...c, 
+            generatedImage: imageUrl,
+            image_filename: imageFilename || c.image_filename
+          } : c
+        )
+      );
+      
+      // Update the viewing creation if it's the same one
+      if (viewingCreation && viewingCreation.id === id) {
+        setViewingCreation({ 
+          ...viewingCreation, 
+          generatedImage: imageUrl,
+          image_filename: imageFilename || viewingCreation.image_filename
+        });
+      }
+    } catch (e) {
+      console.error("Failed to update creation image", e);
+      setError("Failed to update scene image. Please try again.");
+    }
+  };
+
+  // If viewing a creation detail, show the detail page
+  if (viewingCreation) {
+    const creationCharacter = characters.find(char => 
+      viewingCreation.title.toLowerCase().includes(char.name.toLowerCase())
+    );
+    
+    return (
+      <SceneDetail
+        creation={viewingCreation}
+        character={creationCharacter || null}
+        onBack={handleBackToList}
+        onUpdateImage={handleUpdateCreationImage}
+        onDelete={handleDeleteCreation}
+      />
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center p-4 sm:p-6 lg:p-8">
@@ -181,7 +238,12 @@ const App: React.FC = () => {
             />
           )}
 
-          <CreationsList creations={creations} onDelete={handleDeleteCreation} />
+          <CreationsList 
+            creations={creations} 
+            characters={characters}
+            onDelete={handleDeleteCreation} 
+            onView={handleViewCreation}
+          />
         </main>
       </div>
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>

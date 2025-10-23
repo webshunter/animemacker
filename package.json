@@ -12,10 +12,26 @@
     "pm2:stop": "chmod +x scripts/*.sh && ./scripts/stop.sh",
     "pm2:restart": "chmod +x scripts/*.sh && ./scripts/restart.sh",
     "pm2:logs": "pm2 logs",
-    "pm2:status": "pm2 status"
+    "pm2:status": "pm2 status",
+    "monitor": "bash scripts/monitor.sh",
+    "log-manager": "bash scripts/logs.sh",
+    "monitor:status": "bash scripts/monitor.sh status",
+    "monitor:logs": "bash scripts/logs.sh show",
+    "monitor:disk": "bash scripts/monitor.sh disk",
+    "logs:realtime": "bash scripts/logs.sh realtime",
+    "logs:clear": "bash scripts/logs.sh clear",
+    "logs:search": "bash scripts/logs.sh search",
+    "safe-logs": "bash scripts/safe-logs.sh",
+    "safe-logs:read": "bash scripts/safe-logs.sh read",
+    "safe-logs:search": "bash scripts/safe-logs.sh search",
+    "safe-logs:errors": "bash scripts/safe-logs.sh errors",
+    "safe-logs:size": "bash scripts/safe-logs.sh size",
+    "safe-logs:stats": "bash scripts/safe-logs.sh stats"
   },
   "dependencies": {
     "@google/genai": "^1.25.0",
+    "dotenv": "^17.2.3",
+    "groq-sdk": "^0.34.0",
     "node-fetch": "^3.3.2",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"

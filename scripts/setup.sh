@@ -3,21 +3,25 @@
 # Anime Scene Director AI - Setup Script
 echo "🎬 Setting up Anime Scene Director AI..."
 
+# Get the directory where this script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
+
 # Create logs directory
-mkdir -p logs
+mkdir -p "$PROJECT_DIR/logs"
 
 # Install frontend dependencies
 echo "📦 Installing frontend dependencies..."
-cd /home/vds/Documents/vite_project/animemacker
+cd "$PROJECT_DIR"
 npm install
 
 # Install backend dependencies
 echo "📦 Installing backend dependencies..."
-cd /home/vds/Documents/vite_project/animemacker/backend
+cd "$PROJECT_DIR/backend"
 npm install
 
 # Go back to root directory
-cd /home/vds/Documents/vite_project/animemacker
+cd "$PROJECT_DIR"
 
 echo "✅ Setup completed successfully!"
-echo "🚀 Ready to start with: pm2 start ecosystem.config.js"
+echo "🚀 Ready to start with: pm2 start ecosystem.config.cjs"

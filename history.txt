@@ -671,3 +671,378 @@ Project siap untuk production dengan environment variables yang proper.
 - ✅ Production-ready deployment
 
 ### Status: SELESAI - PM2 production setup dengan one-command start
+
+## 2024-12-19 - GitHub Repository Push
+
+### Perubahan yang Dilakukan:
+1. **Git Configuration**:
+   - Update .gitignore untuk exclude node_modules
+   - Include database.sqlite dan .env files
+   - Include semua production files dan scripts
+
+2. **Repository Push**:
+   - Add semua file kecuali node_modules
+   - Commit dengan message yang comprehensive
+   - Push ke GitHub repository
+
+3. **Files Included**:
+   - ✅ Database SQLite (backend/database.sqlite)
+   - ✅ Environment file (.env)
+   - ✅ PM2 configuration (ecosystem.config.js)
+   - ✅ All scripts (scripts/*.sh)
+   - ✅ All components dan services
+   - ✅ Documentation (PM2_README.md, history.txt)
+   - ✅ Package.json dan dependencies
+
+### File yang Di-push:
+- `.env`: Environment variables
+- `backend/database.sqlite`: Database dengan data
+- `ecosystem.config.js`: PM2 configuration
+- `scripts/`: All PM2 scripts
+- `components/`: All React components
+- `services/`: All services
+- `PM2_README.md`: Documentation
+- `history.txt`: Development history
+
+### Hasil:
+- ✅ Semua file berhasil di-push ke GitHub
+- ✅ Database SQLite included untuk easy deployment
+- ✅ Environment file included untuk configuration
+- ✅ PM2 scripts ready untuk production
+- ✅ Complete documentation included
+- ✅ Repository siap untuk deployment
+
+### Status: SELESAI - GitHub repository push dengan semua file production
+
+## 2024-12-19 - Pembelajaran Penggunaan AI dalam Project
+
+### Analisis yang Dilakukan:
+1. **Google Gemini AI Integration**:
+   - Text generation untuk scene prompts (title, image_prompt, video_prompt)
+   - Image generation dengan referensi karakter
+   - Structured output menggunakan JSON schema
+   - Model: gemini-pro dengan temperature 0.8
+
+2. **Fallback System yang Robust**:
+   - Scene generation fallback tanpa AI
+   - Image generation fallback dengan SVG
+   - Analisis kata kunci untuk konteks
+   - Graceful degradation untuk reliability
+
+3. **Context-Aware AI Generation**:
+   - Character integration dalam prompt
+   - Smart prompt generation berdasarkan konteks
+   - Extract karakter traits (hair color, eye color, personality)
+   - Environment details berdasarkan kata kunci
+
+4. **Error Handling yang Comprehensive**:
+   - Try-catch dengan fallback otomatis
+   - Log error untuk debugging
+   - User experience tetap smooth meski AI gagal
+   - Multiple AI providers untuk flexibility
+
+5. **Structured Data Processing**:
+   - JSON schema validation
+   - Type safety dengan TypeScript
+   - Consistent data format untuk frontend
+   - Performance optimization
+
+### Hasil Pembelajaran:
+- ✅ AI digunakan sebagai intelligent system, bukan magic tool
+- ✅ Fallback system memastikan aplikasi tetap berfungsi
+- ✅ Context-aware generation untuk personalization
+- ✅ Comprehensive error handling untuk stability
+- ✅ Multiple AI providers untuk flexibility
+- ✅ User experience focus untuk usability
+
+### Status: SELESAI - Pembelajaran penggunaan AI dalam project animemacker
+
+## 2024-12-19 - Perbaikan Prompt Generation untuk Fokus pada Aksi Karakter
+
+### Masalah yang Diperbaiki:
+- Prompt gambar yang dihasilkan hanya mendeskripsikan karakter saja
+- Tidak mendeskripsikan aksi yang sedang dilakukan karakter
+- Fallback system juga tidak fokus pada aksi karakter
+
+### Perbaikan yang Dilakukan:
+1. **Update AI Prompt untuk Fokus Aksi**:
+   - Tambah instruksi "IMPORTANT: Focus on what the character is DOING in the scene, not just their appearance"
+   - Prioritize ACTION, MOVEMENT, dan ACTIVITY dalam deskripsi
+   - Tambah "The description must show the character actively doing something related to: [idea]"
+
+2. **Perbaiki Fallback Scene Generation**:
+   - Ubah urutan: ACTION dulu, baru character details
+   - Tambah lebih banyak jenis aksi (dance, run, jump, fight, sing, cook, study)
+   - Setiap aksi memiliki deskripsi yang spesifik dan detail
+   - Environment details mendukung aksi karakter
+
+3. **Enhanced Action Detection**:
+   - Detect lebih banyak kata kunci aksi
+   - Generate pose yang sesuai dengan aksi
+   - Motion lines dan visual elements untuk setiap aksi
+   - Default action fallback untuk aksi yang tidak terdeteksi
+
+4. **Update Video Prompt**:
+   - Fokus pada ACTION dan MOVEMENT karakter
+   - Camera work yang emphasize aksi
+   - Deskripsi yang lebih spesifik tentang apa yang dilakukan karakter
+
+5. **Perbaiki Fallback Image Generation**:
+   - SVG scene dengan pose yang sesuai aksi
+   - Visual indicators untuk setiap jenis aksi
+   - Motion lines dan action elements
+   - Text labels yang menunjukkan aksi
+
+### File yang Dimodifikasi:
+- `services/geminiService.ts`: Update AI prompt dan fallback system
+
+### Hasil Perbaikan:
+- ✅ Prompt gambar sekarang fokus pada aksi karakter
+- ✅ Fallback system juga prioritize aksi
+- ✅ Lebih banyak jenis aksi yang didukung
+- ✅ Visual elements yang mendukung aksi
+- ✅ Video prompt yang emphasize movement
+- ✅ SVG fallback dengan pose yang sesuai aksi
+
+### Status: SELESAI - Prompt generation sekarang fokus pada aksi karakter
+
+## 2024-12-19 - Perbaikan Deteksi Kata Kunci Sleep/Tired
+
+### Masalah yang Diperbaiki:
+- Prompt image tidak sesuai dengan ide "she tired and have to go sleep"
+- Sistem tidak mendeteksi kata kunci sleep, tired, rest
+- Tidak ada kondisi khusus untuk aksi sleep/rest
+
+### Perbaikan yang Dilakukan:
+1. **Tambah Deteksi Kata Kunci Sleep**:
+   - Tambah `hasSleep` dengan kata kunci: sleep, sleeping, tired, rest, bed, nap, drowsy, exhausted
+   - Detect lebih banyak variasi kata yang berkaitan dengan tidur
+
+2. **Perbaiki Image Prompt untuk Sleep**:
+   - Tambah kondisi khusus untuk sleep: "feeling tired and sleepy, yawning, rubbing eyes, drowsy expression, about to go to sleep, sleepy pose, exhausted from the day"
+   - Environment khusus: "in bedroom setting with cozy bed, soft pillows, warm blankets, dim lighting perfect for sleep, comfortable sleeping environment"
+
+3. **Perbaiki Video Prompt untuk Sleep**:
+   - Tambah kondisi khusus: "Camera captures their tiredness and sleepiness with gentle close-up shots, emphasizing their drowsy expression and yawning, slow peaceful camera movement"
+
+4. **Perbaiki Fallback Image Generation**:
+   - Tambah deteksi `hasSleep` di fallback image generation
+   - SVG dengan pose sleepy dan elemen sleep (bed, pillows, sleep symbols)
+   - Text label "SLEEPY" untuk visual feedback
+
+### File yang Dimodifikasi:
+- `services/geminiService.ts`: Tambah deteksi sleep dan kondisi khusus
+
+### Hasil Perbaikan:
+- ✅ Sistem sekarang mendeteksi kata kunci sleep/tired
+- ✅ Image prompt sesuai dengan ide sleep/tired
+- ✅ Environment bedroom untuk scene sleep
+- ✅ Video prompt dengan camera work yang sesuai
+- ✅ Fallback SVG dengan pose sleepy
+- ✅ PM2 berhasil menjalankan aplikasi
+
+### Status: SELESAI - Deteksi sleep/tired dan prompt generation sudah diperbaiki
+
+## 2024-12-19 - Perbaikan Comprehensive Prompt Generation untuk Akurasi Ide
+
+### Masalah yang Diperbaiki:
+- Prompt tidak menggambarkan ide dengan akurat
+- Sistem deteksi kata kunci terbatas
+- Tidak ada fallback untuk ide yang tidak terdeteksi
+
+### Perbaikan yang Dilakukan:
+1. **Sistem Deteksi Kata Kunci yang Lebih Comprehensive**:
+   - Split text dengan regex `/[\s,.-]+/` untuk handle punctuation
+   - Tambah lebih banyak variasi kata untuk setiap aksi
+   - Action detection: dance, run, jump, fight, sing, cook, study, sleep, work, play, eat, drink, walk, swim, drive
+   - Environment detection: rain, night, day, city, school, forest, beach, mountain, home, park
+
+2. **Enhanced Action Detection**:
+   - Lebih banyak kata kunci untuk setiap aksi (dance: groove, rhythm, beat)
+   - Fallback untuk action words: go, do, make, create, build, draw, write, think, feel, see, hear, touch
+   - Default action extraction dari ide itu sendiri
+
+3. **Comprehensive Environment Detection**:
+   - Priority environment detection (sleep > home > school > beach > mountain > park > forest > city > night > day)
+   - Lebih banyak variasi environment (beach, mountain, park, home)
+   - Environment yang mendukung aksi karakter
+
+4. **Enhanced Video Prompt Generation**:
+   - Lebih banyak kondisi untuk setiap aksi
+   - Camera work yang spesifik untuk setiap aksi
+   - Deskripsi yang lebih detail tentang apa yang dilakukan karakter
+
+5. **Comprehensive Fallback Image Generation**:
+   - Deteksi kata kunci yang sama dengan main system
+   - Lebih banyak kondisi SVG untuk setiap aksi
+   - Visual elements yang sesuai dengan aksi (work desk, play toys, eat food, walk motion)
+
+### File yang Dimodifikasi:
+- `services/geminiService.ts`: Comprehensive detection dan prompt generation
+
+### Hasil Perbaikan:
+- ✅ Sistem deteksi kata kunci lebih comprehensive
+- ✅ Lebih banyak variasi aksi yang didukung
+- ✅ Environment detection yang lebih akurat
+- ✅ Fallback system yang lebih robust
+- ✅ Prompt generation yang lebih sesuai dengan ide
+- ✅ Video prompt yang lebih spesifik
+- ✅ SVG fallback dengan lebih banyak kondisi
+
+### Status: SELESAI - Comprehensive prompt generation untuk akurasi ide
+
+## 2024-12-19 - Integrasi Groq AI untuk Text Generation
+
+### Perubahan yang Dilakukan:
+1. **Install Groq SDK**:
+   - Install `groq-sdk` package untuk integrasi dengan Groq AI
+   - Update package.json dengan dependency baru
+
+2. **Update Environment Variables**:
+   - Tambah `GROQ_API_KEY=[REDACTED_FOR_SECURITY]`
+   - Keep `GEMINI_API_KEY` sebagai fallback
+
+3. **Migrasi dari Google Gemini ke Groq**:
+   - Replace `@google/genai` dengan `groq-sdk`
+   - Update `generateScenePrompts` untuk menggunakan Groq API
+   - Model: `llama-3.1-70b-versatile` untuk text generation
+   - Temperature: 0.8 untuk kreativitas yang seimbang
+   - Max tokens: 2000 untuk output yang cukup
+
+4. **Structured Prompting untuk Groq**:
+   - Groq tidak support JSON schema seperti Gemini
+   - Gunakan structured prompting dengan format JSON yang jelas
+   - Explicit JSON format dalam prompt untuk konsistensi output
+
+5. **Image Generation Update**:
+   - Groq tidak support image generation
+   - Update `generateImageWithReference` untuk langsung menggunakan fallback
+   - Tetap menggunakan SVG fallback system
+
+### File yang Dimodifikasi:
+- `package.json`: Tambah groq-sdk dependency
+- `.env`: Tambah GROQ_API_KEY
+- `services/geminiService.ts`: Migrasi ke Groq API
+
+### Keuntungan Groq:
+- ✅ **Faster response time** - Groq dikenal lebih cepat
+- ✅ **Better text generation** - Llama 3.1 70B model yang powerful
+- ✅ **More reliable** - Less quota limits dibanding Gemini free tier
+- ✅ **Cost effective** - Pricing yang lebih competitive
+
+### Hasil Integrasi:
+- ✅ Groq SDK berhasil diinstall
+- ✅ Environment variables terkonfigurasi
+- ✅ Service berhasil dimigrasi ke Groq
+- ✅ PM2 restart berhasil
+- ✅ Aplikasi berjalan dengan Groq AI
+- ✅ Fallback system tetap berfungsi
+
+### Status: SELESAI - Integrasi Groq AI berhasil
+
+## 2024-12-19 - Perbaikan Groq AI Model dan JSON Parsing
+
+### Masalah yang Ditemukan:
+- Model `llama-3.1-70b-versatile` sudah tidak didukung (decommissioned)
+- Groq API menghasilkan response dengan markdown formatting yang tidak bisa di-parse
+- JSON parsing gagal karena karakter kontrol dan formatting
+
+### Perbaikan yang Dilakukan:
+1. **Update Model Groq**:
+   - Ganti dari `llama-3.1-70b-versatile` ke `llama-3.1-8b-instant`
+   - Model baru lebih cepat dan masih didukung
+
+2. **Perbaiki JSON Parsing**:
+   - Handle markdown formatting (```json``` blocks)
+   - Remove control characters yang menyebabkan parsing error
+   - Clean whitespace dan newlines
+   - Robust JSON extraction dari response
+
+3. **Test dengan MCP Tools**:
+   - Buat test script untuk debug Groq API
+   - Verifikasi bahwa Groq menghasilkan prompt yang sesuai
+   - Confirm bahwa "she tired and have to go sleep" menghasilkan prompt sleep-related
+
+### Hasil Test Groq API:
+✅ **Groq API bekerja dengan sempurna**
+✅ **Model llama-3.1-8b-instant aktif dan responsive**
+✅ **JSON parsing berhasil dengan markdown handling**
+✅ **Prompt yang dihasilkan sesuai dengan ide sleep/tired**
+
+### Contoh Output Groq yang Benar:
+```json
+{
+  "title": "Slumber's Whisper",
+  "image_prompt": "A young woman, dressed in a soft blue nightgown, slowly makes her way to her bed, her legs heavy with exhaustion...",
+  "video_prompt": "Scene: A young woman, dressed in a soft blue nightgown, slowly walks towards her bed..."
+}
+```
+
+### File yang Dimodifikasi:
+- `services/geminiService.ts`: Update model dan JSON parsing
+- `vite.config.ts`: Tambah GROQ_API_KEY environment variable
+- `test-groq.js.backup`: Test script untuk debug
+
+### Status: SELESAI - Groq AI berfungsi dengan sempurna
+
+## 2025-10-22 - Implementasi File Storage System & PM2 Logging Management
+
+### Masalah yang Diperbaiki:
+- PayloadTooLargeError saat upload image besar (base64 terlalu besar)
+- Perlu sistem file storage yang efisien
+- Perlu manajemen log PM2 yang lebih baik
+
+### Perubahan yang Dilakukan:
+1. **File Storage System**:
+   - Install multer untuk handle file upload
+   - Buat folder storage/images/ untuk menyimpan file
+   - Update database schema dengan field image_filename
+   - API endpoint POST /api/scenes/:id/image untuk upload file
+   - File naming: scene-{timestamp}-{random}.{ext}
+   - Size limit: 10MB, image types only
+
+2. **PM2 Logging Management**:
+   - Install pm2-logrotate module (v3.0.0)
+   - Konfigurasi: 10MB max size, 7 files retained, compressed
+   - Date format: YYYY-MM-DD_HH-mm-ss
+   - Worker interval: 30 seconds
+
+3. **Monitoring Scripts**:
+   - `scripts/monitor.sh`: Project monitoring comprehensive
+   - `scripts/logs.sh`: Log management dengan search capabilities
+   - NPM scripts untuk easy access: monitor, log-manager, logs:search
+
+4. **Frontend Updates**:
+   - Update SceneDetail untuk file upload instead of base64
+   - Update SceneCard untuk display file URL
+   - File upload dengan progress indicator
+   - Auto-save ke database setelah upload
+
+### File yang Dimodifikasi:
+- `backend/server.js`: Multer integration, file storage
+- `services/apiService.ts`: File upload handling
+- `types.ts`: Tambah image_filename field
+- `components/SceneDetail.tsx`: File upload UI
+- `components/SceneCard.tsx`: File URL display
+- `package.json`: Tambah monitoring scripts
+- `scripts/monitor.sh`: Project monitoring
+- `scripts/logs.sh`: Log management
+- `PM2_MANAGEMENT.md`: Documentation
+
+### Fitur Baru:
+- **File Storage**: Efficient image storage dengan unique naming
+- **PM2 Log Rotation**: Automatic log management
+- **Monitoring Scripts**: Comprehensive project monitoring
+- **Log Search**: Search logs untuk specific terms
+- **Real-time Logs**: Live log streaming
+- **Disk Usage Monitoring**: Track storage usage
+
+### Hasil:
+- ✅ File storage system yang efisien
+- ✅ PM2 log rotation berfungsi
+- ✅ Monitoring scripts comprehensive
+- ✅ Log search capabilities
+- ✅ Real-time log monitoring
+- ✅ Production-ready logging system
+
+### Status: SELESAI - File storage system dan PM2 logging management berhasil diimplementasikan

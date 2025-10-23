@@ -15,10 +15,21 @@ export default defineConfig(({ mode }) => {
           },
         },
       },
+      preview: {
+        port: 5551,
+        host: '0.0.0.0',
+        proxy: {
+          '/api': {
+            target: 'http://localhost:5552',
+            changeOrigin: true,
+          },
+        },
+      },
       plugins: [react()],
       define: {
         'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY),
-        'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY)
+        'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY),
+        'process.env.VITE_GROQ_API_KEY': JSON.stringify(env.VITE_GROQ_API_KEY)
       },
       resolve: {
         alias: {
