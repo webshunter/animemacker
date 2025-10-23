@@ -7,6 +7,7 @@ const fs = require('fs');
 
 const app = express();
 const PORT = process.env.PORT || 5552; // Use environment variable or default to 5552
+const HOST = process.env.HOST || '0.0.0.0'; // Use environment variable or default to 0.0.0.0
 
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
@@ -281,6 +282,6 @@ app.delete('/api/scenes/:id', (req, res) => {
 });
 
 
-app.listen(PORT, () => {
-  console.log(`Backend server running on port ${PORT}`);
+app.listen(PORT, HOST, () => {
+  console.log(`Backend server running on ${HOST}:${PORT}`);
 });

@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { SceneOutput, Character, Creation } from './types';
-import { generateScenePrompts } from './services/geminiService';
+import { generateScenePrompts } from './services/groqService';
 import Header from './components/Header';
 import InputForm from './components/InputForm';
 import ResultDisplay from './components/ResultDisplay';
