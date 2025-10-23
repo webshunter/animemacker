@@ -16,13 +16,17 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ result, character, onCrea
 
   const handleCopy = () => {
     const jsonString = JSON.stringify(result, null, 2);
-    navigator.clipboard.writeText(jsonString).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    }).catch((error) => {
-      console.error('Failed to copy JSON:', error);
-      alert('Failed to copy JSON. Please try again.');
-    });
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(jsonString).then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      }).catch((error) => {
+        console.error('Failed to copy JSON:', error);
+        alert('Failed to copy JSON. Please try again.');
+      });
+    } else {
+      alert('Clipboard API not supported. Please copy manually: ' + jsonString);
+    }
   };
 
   const handleSaveCreation = () => {

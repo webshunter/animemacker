@@ -32,12 +32,16 @@ const CharacterDisplay: React.FC<CharacterDisplayProps> = ({ character, onEdit, 
       console.error('Failed to copy image:', error);
       // Fallback: copy image URL
       try {
-        await navigator.clipboard.writeText(character.image);
-        setCopySuccess(true);
-        setTimeout(() => setCopySuccess(false), 2000);
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(character.image);
+          setCopySuccess(true);
+          setTimeout(() => setCopySuccess(false), 2000);
+        } else {
+          alert('Clipboard API not supported. Image URL: ' + character.image);
+        }
       } catch (fallbackError) {
         console.error('Failed to copy image URL:', fallbackError);
-        alert('Failed to copy image. Please try again.');
+        alert('Failed to copy image. Image URL: ' + character.image);
       }
     }
   };

@@ -31,36 +31,51 @@ const SceneDetail: React.FC<SceneDetailProps> = ({
 
   const handleCopy = () => {
     const jsonString = JSON.stringify(creation, null, 2);
-    navigator.clipboard.writeText(jsonString).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    }).catch((error) => {
-      console.error('Failed to copy JSON:', error);
-      // Fallback: show alert
-      alert('Failed to copy JSON. Please try again.');
-    });
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(jsonString).then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      }).catch((error) => {
+        console.error('Failed to copy JSON:', error);
+        // Fallback: show alert
+        alert('Failed to copy JSON. Please try again.');
+      });
+    } else {
+      // Fallback for browsers without clipboard API
+      alert('Clipboard API not supported. Please copy manually: ' + jsonString);
+    }
   };
 
   const handleCopyImagePrompt = () => {
-    navigator.clipboard.writeText(creation.image_prompt).then(() => {
-      setImagePromptCopied(true);
-      setTimeout(() => setImagePromptCopied(false), 2000);
-    }).catch((error) => {
-      console.error('Failed to copy image prompt:', error);
-      // Fallback: show alert
-      alert('Failed to copy image prompt. Please try again.');
-    });
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(creation.image_prompt).then(() => {
+        setImagePromptCopied(true);
+        setTimeout(() => setImagePromptCopied(false), 2000);
+      }).catch((error) => {
+        console.error('Failed to copy image prompt:', error);
+        // Fallback: show alert
+        alert('Failed to copy image prompt. Please try again.');
+      });
+    } else {
+      // Fallback for browsers without clipboard API
+      alert('Clipboard API not supported. Please copy manually: ' + creation.image_prompt);
+    }
   };
 
   const handleCopyVideoPrompt = () => {
-    navigator.clipboard.writeText(creation.video_prompt).then(() => {
-      setVideoPromptCopied(true);
-      setTimeout(() => setVideoPromptCopied(false), 2000);
-    }).catch((error) => {
-      console.error('Failed to copy video prompt:', error);
-      // Fallback: show alert
-      alert('Failed to copy video prompt. Please try again.');
-    });
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(creation.video_prompt).then(() => {
+        setVideoPromptCopied(true);
+        setTimeout(() => setVideoPromptCopied(false), 2000);
+      }).catch((error) => {
+        console.error('Failed to copy video prompt:', error);
+        // Fallback: show alert
+        alert('Failed to copy video prompt. Please try again.');
+      });
+    } else {
+      // Fallback for browsers without clipboard API
+      alert('Clipboard API not supported. Please copy manually: ' + creation.video_prompt);
+    }
   };
 
   const handleCopyImage = async () => {
@@ -68,6 +83,11 @@ const SceneDetail: React.FC<SceneDetailProps> = ({
     
     if (!imageUrl) {
       alert('No image to copy. Please upload a scene image first.');
+      return;
+    }
+
+    if (!navigator.clipboard) {
+      alert('Clipboard API not supported. Image URL: ' + imageUrl);
       return;
     }
 
@@ -89,12 +109,16 @@ const SceneDetail: React.FC<SceneDetailProps> = ({
       console.error('Failed to copy image:', error);
       // Fallback: copy image URL
       try {
-        await navigator.clipboard.writeText(imageUrl);
-        setImageCopied(true);
-        setTimeout(() => setImageCopied(false), 2000);
+        if (navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(imageUrl);
+          setImageCopied(true);
+          setTimeout(() => setImageCopied(false), 2000);
+        } else {
+          alert('Failed to copy image. Image URL: ' + imageUrl);
+        }
       } catch (fallbackError) {
         console.error('Failed to copy image URL:', fallbackError);
-        alert('Failed to copy image. Please try again.');
+        alert('Failed to copy image. Image URL: ' + imageUrl);
       }
     }
   };
