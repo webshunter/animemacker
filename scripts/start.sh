@@ -18,7 +18,7 @@ echo "🔨 Building frontend..."
 
 # Start with PM2
 echo "🚀 Starting applications with PM2..."
-pm2 start ecosystem.config.js
+pm2 start ecosystem.config.cjs
 
 # Show status
 echo "📊 Application status:"

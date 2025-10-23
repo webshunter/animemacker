@@ -16,17 +16,31 @@ const CreationCard: React.FC<CreationCardProps> = ({ creation, onDelete }) => {
   const [descCopied, setDescCopied] = useState(false);
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(creation.video_prompt).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    });
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(creation.video_prompt).then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      }).catch(err => {
+        console.error('Failed to copy video prompt: ', err);
+        alert('Failed to copy. Please check browser permissions.');
+      });
+    } else {
+      alert('Clipboard API not available. Please copy manually.');
+    }
   };
 
   const handleImageCopy = () => {
-    navigator.clipboard.writeText(creation.image_prompt).then(() => {
-      setImageCopied(true);
-      setTimeout(() => setImageCopied(false), 2000);
-    });
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(creation.image_prompt).then(() => {
+        setImageCopied(true);
+        setTimeout(() => setImageCopied(false), 2000);
+      }).catch(err => {
+        console.error('Failed to copy image prompt: ', err);
+        alert('Failed to copy. Please check browser permissions.');
+      });
+    } else {
+      alert('Clipboard API not available. Please copy manually.');
+    }
   };
 
   // Generate hashtags for social media
@@ -90,17 +104,31 @@ const CreationCard: React.FC<CreationCardProps> = ({ creation, onDelete }) => {
   const description = generateDescription();
 
   const handleHashtagCopy = () => {
-    navigator.clipboard.writeText(hashtags.join(' ')).then(() => {
-      setHashtagCopied(true);
-      setTimeout(() => setHashtagCopied(false), 2000);
-    });
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(hashtags.join(' ')).then(() => {
+        setHashtagCopied(true);
+        setTimeout(() => setHashtagCopied(false), 2000);
+      }).catch(err => {
+        console.error('Failed to copy hashtags: ', err);
+        alert('Failed to copy. Please check browser permissions.');
+      });
+    } else {
+      alert('Clipboard API not available. Please copy manually.');
+    }
   };
 
   const handleDescriptionCopy = () => {
-    navigator.clipboard.writeText(description).then(() => {
-      setDescCopied(true);
-      setTimeout(() => setDescCopied(false), 2000);
-    });
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(description).then(() => {
+        setDescCopied(true);
+        setTimeout(() => setDescCopied(false), 2000);
+      }).catch(err => {
+        console.error('Failed to copy description: ', err);
+        alert('Failed to copy. Please check browser permissions.');
+      });
+    } else {
+      alert('Clipboard API not available. Please copy manually.');
+    }
   };
 
   return (
