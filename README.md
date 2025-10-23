@@ -78,10 +78,93 @@ Create a `.env` file with the following variables:
 ```env
 # Groq API Key for text generation
 VITE_GROQ_API_KEY=your_groq_api_key_here
-
-# Google Gemini API Key (optional fallback)
-GEMINI_API_KEY=your_gemini_api_key_here
 ```
+
+## 🚀 Minimal Setup for Server Deployment
+
+### Quick Server Setup (5 minutes)
+
+For production deployment on a server, follow these minimal steps:
+
+#### 1. **Clone and Setup**
+```bash
+# Clone repository
+git clone https://github.com/webshunter/animemacker.git
+cd animemacker
+
+# Copy environment template
+cp .env.example .env
+```
+
+#### 2. **Configure Environment**
+Edit `.env` file and add your Groq API key:
+```env
+VITE_GROQ_API_KEY=your_actual_groq_api_key_here
+```
+
+#### 3. **Install Dependencies**
+```bash
+# Install frontend dependencies
+npm install
+
+# Install backend dependencies
+cd backend && npm install && cd ..
+```
+
+#### 4. **Start Application**
+```bash
+# Start with PM2 (production ready)
+npm run pm2:start
+```
+
+#### 5. **Access Application**
+- **Frontend**: `http://your-server-ip:5551`
+- **Backend API**: `http://your-server-ip:5552`
+
+### Server Requirements
+
+- **Node.js**: 18+ 
+- **Memory**: 512MB minimum
+- **Storage**: 100MB for application + image storage
+- **Ports**: 5551 (frontend), 5552 (backend)
+- **OS**: Linux/Ubuntu recommended
+
+### Production Commands
+
+```bash
+# Start application
+npm run pm2:start
+
+# Stop application
+npm run pm2:stop
+
+# Restart application
+npm run pm2:restart
+
+# Check status
+npm run pm2:status
+
+# View logs
+npm run pm2:logs
+
+# Monitor system
+npm run monitor
+```
+
+### Troubleshooting
+
+If you encounter issues:
+
+1. **Check PM2 status**: `npm run pm2:status`
+2. **View logs**: `npm run safe-logs:errors`
+3. **Check ports**: `netstat -tlnp | grep :555`
+4. **Restart services**: `npm run pm2:restart`
+
+### Security Notes
+
+- The application runs on `0.0.0.0` to accept external connections
+- Ensure your server firewall allows ports 5551 and 5552
+- Keep your Groq API key secure and never commit it to version control
 
 ## 📖 Usage
 
