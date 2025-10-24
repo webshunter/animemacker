@@ -12,97 +12,59 @@ const HashtagGenerator: React.FC<HashtagGeneratorProps> = ({ result, character }
   const [copied, setCopied] = useState(false);
   const [descCopied, setDescCopied] = useState(false);
 
-  // Generate hashtags based on scene content
+  // Generate meaningful hashtags based on content
   const generateHashtags = (): string[] => {
     const hashtags: string[] = [];
     const title = result.title.toLowerCase();
     const imagePrompt = result.image_prompt.toLowerCase();
     const videoPrompt = result.video_prompt.toLowerCase();
     
-    // Base anime hashtags
-    hashtags.push('#anime', '#animeart', '#animeedit', '#animevideo');
+    // Core meaningful hashtags
+    hashtags.push('#anime', '#story', '#meaningful', '#character', '#emotion');
     
     // Character-based hashtags
     if (character) {
       hashtags.push(`#${character.name.toLowerCase().replace(/\s+/g, '')}`);
-      const desc = character.description.toLowerCase();
-      if (desc.includes('energetic') || desc.includes('cheerful')) {
-        hashtags.push('#energetic', '#cheerful');
-      }
-      if (desc.includes('mysterious') || desc.includes('cool')) {
-        hashtags.push('#mysterious', '#cool');
-      }
-      if (desc.includes('dance') || desc.includes('dancing')) {
-        hashtags.push('#dance', '#dancing');
-      }
     }
     
-    // Scene-based hashtags
-    if (title.includes('dance') || imagePrompt.includes('dance')) {
-      hashtags.push('#dance', '#dancing', '#choreography', '#movement');
+    // Emotion-based meaningful hashtags
+    if (title.includes('sleep') || title.includes('tired') || imagePrompt.includes('sleep') || imagePrompt.includes('tired')) {
+      hashtags.push('#rest', '#peaceful', '#calm', '#reflection');
     }
-    if (title.includes('sleep') || title.includes('tired') || imagePrompt.includes('sleep') || imagePrompt.includes('tired') || imagePrompt.includes('bedroom') || imagePrompt.includes('bed')) {
-      hashtags.push('#sleep', '#tired', '#bedroom', '#rest', '#sleepy', '#peaceful', '#cozy');
+    if (title.includes('happy') || imagePrompt.includes('happy') || imagePrompt.includes('smile')) {
+      hashtags.push('#joy', '#happiness', '#positive', '#uplifting');
     }
-    if (title.includes('rain') || imagePrompt.includes('rain')) {
-      hashtags.push('#rain', '#rainy', '#weather', '#atmospheric');
+    if (title.includes('sad') || imagePrompt.includes('sad') || imagePrompt.includes('cry')) {
+      hashtags.push('#emotion', '#feeling', '#heart', '#sensitive');
     }
-    if (title.includes('night') || imagePrompt.includes('night')) {
-      hashtags.push('#night', '#nighttime', '#dark', '#moody');
+    if (title.includes('love') || imagePrompt.includes('love') || imagePrompt.includes('romance')) {
+      hashtags.push('#love', '#heart', '#connection', '#relationship');
     }
-    if (title.includes('city') || imagePrompt.includes('city')) {
-      hashtags.push('#city', '#urban', '#street', '#tokyo');
-    }
-    if (title.includes('school') || imagePrompt.includes('school')) {
-      hashtags.push('#school', '#highschool', '#student', '#academic');
-    }
-    if (title.includes('forest') || imagePrompt.includes('forest')) {
-      hashtags.push('#forest', '#nature', '#outdoor', '#green');
+    if (title.includes('friendship') || imagePrompt.includes('friendship') || imagePrompt.includes('friend')) {
+      hashtags.push('#friendship', '#bond', '#together', '#support');
     }
     
-    // Art style hashtags
-    if (imagePrompt.includes('anime art style')) {
-      hashtags.push('#animeart', '#manga', '#japaneseart');
-    }
-    if (imagePrompt.includes('dynamic')) {
-      hashtags.push('#dynamic', '#action', '#motion');
-    }
-    if (imagePrompt.includes('cinematic')) {
-      hashtags.push('#cinematic', '#cinematography', '#film');
-    }
+    // Minimal trending hashtags
+    hashtags.push('#animeart', '#animecommunity');
     
-    // Video-specific hashtags
-    if (videoPrompt.includes('camera')) {
-      hashtags.push('#camerawork', '#cinematography', '#filming');
-    }
-    if (videoPrompt.includes('smooth')) {
-      hashtags.push('#smooth', '#flow', '#seamless');
-    }
-    if (videoPrompt.includes('tracking')) {
-      hashtags.push('#tracking', '#follow', '#movement');
-    }
-    
-    // Trending hashtags for short videos
-    hashtags.push('#shortvideo', '#viral', '#trending', '#fyp', '#foryou');
-    hashtags.push('#animeedit', '#animevideo', '#animecontent', '#animecommunity');
-    
-    // Remove duplicates and limit to 20 hashtags
-    return [...new Set(hashtags)].slice(0, 20);
+    // Remove duplicates and limit to 10 hashtags for cleaner look
+    return [...new Set(hashtags)].slice(0, 10);
   };
 
-  // Generate video description
+  // Generate meaningful description
   const generateDescription = (): string => {
-    let description = `🎨 ${result.title}\n\n`;
+    let description = `✨ ${result.title}\n\n`;
     
     if (character) {
-      description += `👤 Featuring: ${character.name}\n`;
-      description += `✨ ${character.description}\n\n`;
+      description += `👤 Character: ${character.name}\n`;
+      description += `💫 ${character.description}\n\n`;
     }
     
-    description += `🎬 Scene: ${result.image_prompt.substring(0, 100)}...\n\n`;
-    description += `📹 Video: ${result.video_prompt.substring(0, 100)}...\n\n`;
+    // Show the meaningful description instead of truncated prompts
+    description += `💭 ${result.video_prompt}\n\n`;
     
-    description += `#anime #animeart #animevideo #animeedit #shortvideo #viral #fyp #foryou`;
+    // Add minimal, meaningful hashtags
+    description += `#anime #story #meaningful #character #emotion`;
     
     return description;
   };
